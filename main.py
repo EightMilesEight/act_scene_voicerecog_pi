@@ -5,9 +5,14 @@
 #python may not support pyaudio...
 import speech_recognition as sr
 
-def speak(audio):
-    engine.say(audio)
-    engine.runAndWait()
+#check if the speech includes phrases from the "lines" list, and return which phrase is included
+#the first phrase in the list that is recognized will be returned
+def check():
+    for line in lines:
+        if line in query:
+            return line
+
+lines = ["act 1 scene 1", "act 1 scene 2", "act 1 scene 3"]
 
 # simple function to recognise speech from user
 def takecommand():
@@ -31,3 +36,5 @@ def takecommand():
 while True:
   query = takecommand() # whatever user says will be stored in this variable
   print("The Test got in program is : "+query)
+  check()
+  print(check())
