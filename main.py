@@ -2,10 +2,10 @@ from socket import *
 import threading
 import sys
 # pip install SpeechRecognition
-    # in case of error use 'pip install pyaudio' or...
-    # in case of error use 'pip install pipwin' then 'pipwin install pyaudio'
-    # if error continued you may need to use python 3.6 or lower as the latest
-    # python may not support pyaudio...
+# in case of error use 'pip install pyaudio' or...
+# in case of error use 'pip install pipwin' then 'pipwin install pyaudio'
+# if error continued you may need to use python 3.6 or lower as the latest
+# python may not support pyaudio...
 import speech_recognition as sr
 
 FLAG = False  # this is a flag variable for checking quit
@@ -41,6 +41,7 @@ def takecommand():
 
 def voice_recog():
     while True:
+        global query
         query = takecommand()  # whatever user says will be stored in this variable
         print("The Test got in program is : " + query)
         check()
@@ -110,3 +111,4 @@ def main():
 # This is where the program starts
 if __name__ == '__main__':
     main()
+    voice_recog()
