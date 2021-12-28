@@ -1,5 +1,3 @@
-#! /usr/bin/python3
-
 import socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,12 +14,41 @@ import speech_recognition as sr
 
 # check if the speech includes phrases from the "lines" list, and return which phrase is included
 # the first phrase in the list that is recognized will be returned
+# for some reason it has an error with apostrophes so until I fix that I wouldn't use them
 def check():
-   for line in lines:
-      if line in query:
-         return line
+   with open('lines.txt') as file:
+      global lines
+      lines = file.readlines()
+      lines = [line.rstrip() for line in lines]
+      for line in lines:
+         if line in query:
+            return line
 
-lines = ["act 1 scene 1", "act 1 scene 2", "act 1 scene 3"]
+def find_scene():
+      if (lines.index(check())) < 7:
+         return '0101'
+      elif (lines.index(check())) < 40:
+         return '0102'
+      elif (lines.index(check())) < 55:
+         return '0103'
+      elif (lines.index(check())) < 75:
+         return '0104'
+      elif (lines.index(check())) < 93:
+         return '0105'
+      elif (lines.index(check())) < 109:
+         return '0106'
+      elif (lines.index(check())) < 116:
+         return '0107'
+      elif (lines.index(check())) < 129:
+         return '0108'
+      elif (lines.index(check())) < 144:
+         return '0109'
+      elif (lines.index(check())) < 162:
+         return '0110'
+      elif (lines.index(check())) < 173:
+         return '0111'
+      else:
+         return None
 
 # simple function to recognise speech from user
 def takecommand():
@@ -53,7 +80,8 @@ while 2:
    check()
    if check() != None:
       print(check())
-      r = check()
+      r = find_scene()
       ts(s)
+      print(find_scene())
 
-s.close ()
+s.close()
