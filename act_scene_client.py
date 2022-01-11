@@ -3,7 +3,7 @@ import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = "localhost"
 port = 1024
-s.connect((host,port))
+s.connect((host, port))
 
 # pip install SpeechRecognition
 # in case of error use 'pip install pyaudio' or...
@@ -12,76 +12,125 @@ s.connect((host,port))
 # python may not support pyaudio...
 import speech_recognition as sr
 
-# check if the speech includes phrases from the "lines" list, and return which phrase is included
+# creates a list called "lines" out of lines.txt
+with open('lines.txt') as file:
+    global lines
+    lines = file.readlines()
+    lines = [line.rstrip() for line in lines]
+
+
+# check if the speech includes a phrase, and return which phrase is included
 # the first phrase in the list that is recognized will be returned
 # for some reason it has an error with - and ' so until I fix that don't use lines containing them
-def check():
-   with open('lines.txt') as file:
-      global lines
-      lines = file.readlines()
-      lines = [line.rstrip() for line in lines]
-      for line in lines:
-         if line in query:
+def check(phrase):
+    for line in lines:
+        if line in phrase:
             return line
 
+
+A1S1 = lines.index(check('act 1 scene 1'))
+A1S2 = lines.index(check('act 1 scene 2'))
+A1S3 = lines.index(check('act 1 scene 3'))
+A1S4 = lines.index(check('act 1 scene 4'))
+A1S5 = lines.index(check('act 1 scene 5'))
+A1S6 = lines.index(check('act 1 scene 6'))
+A1S7 = lines.index(check('act 1 scene 7'))
+A1S8 = lines.index(check('act 1 scene 8'))
+A1S9 = lines.index(check('act 1 scene 9'))
+A1S10 = lines.index(check('act 1 scene 10'))
+A1S11 = lines.index(check('act 1 scene 11'))
+A1S12 = lines.index(check('act 1 scene 12'))
+A1S13 = lines.index(check('act 1 scene 13'))
+A1S14 = lines.index(check('act 1 scene 14'))
+A1S15 = lines.index(check('act 1 scene 15'))
+A2S1 = lines.index(check('act 2 scene 1'))
+A2S2 = lines.index(check('act 2 scene 2'))
+A2S3 = lines.index(check('act 2 scene 3'))
+A2S4 = lines.index(check('act 2 scene 4'))
+A2S5 = lines.index(check('act 2 scene 5'))
+A2S6 = lines.index(check('act 2 scene 6'))
+A2S7 = lines.index(check('act 2 scene 7'))
+A2S8 = lines.index(check('act 2 scene 8'))
+A2S9 = lines.index(check('act 2 scene 9'))
+A2S10 = lines.index(check('act 2 scene 10'))
+A2S11 = lines.index(check('act 2 scene 11'))
+A2S12 = lines.index(check('act 2 scene 12'))
+A2S13 = lines.index(check('act 2 scene 13'))
+A2S14 = lines.index(check('act 2 scene 14'))
+A2S15 = lines.index(check('act 2 scene 15'))
+A3S1 = lines.index(check('act 3 scene 1'))
+A3S2 = lines.index(check('act 3 scene 2'))
+A3S3 = lines.index(check('act 3 scene 3'))
+A3S4 = lines.index(check('act 3 scene 4'))
+A3S5 = lines.index(check('act 3 scene 5'))
+A3S6 = lines.index(check('act 3 scene 6'))
+A3S7 = lines.index(check('act 3 scene 7'))
+A3S8 = lines.index(check('act 3 scene 8'))
+A3S9 = lines.index(check('act 3 scene 9'))
+A3S10 = lines.index(check('act 3 scene 10'))
+A3S11 = lines.index(check('act 3 scene 11'))
+A3S12 = lines.index(check('act 3 scene 12'))
+A3S13 = lines.index(check('act 3 scene 13'))
+A3S14 = lines.index(check('act 3 scene 14'))
+A3S15 = lines.index(check('act 3 scene 15'))
+end = lines.index(check('end'))
+
+
 def find_scene():
-      if (lines.index(check())) < 7:
-         return '0101'
-      elif (lines.index(check())) < 40:
-         return '0102'
-      elif (lines.index(check())) < 55:
-         return '0103'
-      elif (lines.index(check())) < 75:
-         return '0104'
-      elif (lines.index(check())) < 93:
-         return '0105'
-      elif (lines.index(check())) < 109:
-         return '0106'
-      elif (lines.index(check())) < 116:
-         return '0107'
-      elif (lines.index(check())) < 129:
-         return '0108'
-      elif (lines.index(check())) < 144:
-         return '0109'
-      elif (lines.index(check())) < 162:
-         return '0110'
-      elif (lines.index(check())) < 173:
-         return '0111'
-      else:
-         return None
+    if (lines.index(check(speech))) in range(A1S1, A1S2):
+        return '0101'
+    elif (lines.index(check(speech))) in range(A1S2, A1S3):
+        return '0102'
+    elif (lines.index(check(speech))) in range(A1S3, A1S4):
+        return '0103'
+    elif (lines.index(check(speech))) in range(A1S4, A1S5):
+        return '0104'
+    elif (lines.index(check(speech))) in range(A1S5, A1S6):
+        return '0105'
+    elif (lines.index(check(speech))) in range(A1S6, A1S7):
+        return '0106'
+    elif (lines.index(check(speech))) in range(A1S7, A1S8):
+        return '0107'
+    elif (lines.index(check(speech))) in range(A1S8, A1S9):
+        return '0108'
+    elif (lines.index(check(speech))) in range(A1S9, A1S10):
+        return '0109'
+    elif (lines.index(check(speech))) in range(A1S10, A1S11):
+        return '0110'
+    elif (lines.index(check(speech))) in range(A1S11, A1S12):
+        return '0111'
 
 # simple function to recognise speech from user
 def takecommand():
-   # it takes microphone input and returns string output
-   r = sr.Recognizer()
-   with sr.Microphone(device_index=1) as source:
-      print('Listening.....')
-      r.pause_threshold = 1
-      r.energy_threshold = 4000
-      audio = r.listen(source)
-   try:
-      print('Recognising...')
-      query = r.recognize_google(audio, language='en-in')
-      print('User Said : ', query)
-   except Exception as e:
-      print('exception : ', e)
-      return "None"
-   return query
+    # it takes microphone input and returns string output
+    r = sr.Recognizer()
+    with sr.Microphone(device_index=1) as source:
+        print('Listening.....')
+        r.pause_threshold = 1
+        r.energy_threshold = 4000
+        audio = r.listen(source)
+    try:
+        print('Recognising...')
+        speech = r.recognize_google(audio, language='en-in')
+        print('User Said : ', speech)
+    except Exception as e:
+        print('exception : ', e)
+        return "None"
+    return speech
+
 
 def ts(str):
-   s.sendall(r.encode('utf-8'))
-   data = ''
-   data = s.recv(1024).decode()
-   print (data)
+    s.sendall(r.encode('utf-8'))
+    data = ''
+    data = s.recv(1024).decode()
+    print(data)
+
 
 while 2:
-   query = takecommand()  # whatever user says will be stored in this variable
-   print("The Test got in program is: " + query)
-   check()
-   if check() != None:
-      print(check())
-      r = find_scene()
-      ts(s)
-      print(find_scene())
-
-s.close()
+    speech = takecommand()  # whatever user says will be stored in this variable
+    print("The Test got in program is: " + speech)
+    if check(speech) != None:
+        print(check(speech))
+        r = find_scene()
+        ts(s)
+        print(r)
