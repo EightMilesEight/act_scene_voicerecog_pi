@@ -12,6 +12,44 @@ s.connect((host, port))
 # python may not support pyaudio...
 import speech_recognition as sr
 
+# Import tkinter library
+from tkinter import *
+
+version = 'Beta v1.1'
+# Create an instance of tkinter window
+win = Tk()
+win.title('Scene Recognizer ' + version)
+win.geometry("600x325")
+
+def open_lines():
+    text_box.delete(0.0, END)
+    lines = open("lines.txt", "r")
+    text_box.insert(END, lines.read())
+    lines.close()
+
+def save_lines():
+    lines = open("lines.txt", "w")
+    lines.write(text_box.get(1.0, END))
+    lines.close()
+    win.destroy()
+
+def GUI_start():
+    global text_box
+    global open_btn
+    global save
+    # Creating a text box widget
+    text_box = Text(win)
+    text_box.pack()
+
+    open_btn = Button(win, text="Reset to Previous Lines", command=open_lines)
+    open_btn.pack()
+
+    # Create a button to save the text
+    save = Button(win, text="Save Lines", command=save_lines)
+    save.pack()
+
+    open_lines()
+
 # creates a list called "lines" out of lines.txt
 with open('lines.txt') as file:
     global lines
@@ -126,7 +164,9 @@ def ts(str):
     print(data)
 
 
-while 2:
+while True:
+    GUI_start()
+    win.mainloop()
     speech = takecommand()  # whatever user says will be stored in this variable
     print("The Test got in program is: " + speech)
     if check(speech) != None:
