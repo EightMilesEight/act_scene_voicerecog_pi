@@ -23,6 +23,7 @@ host = "localhost"
 port = 1024
 print ('Host: ',host)
 print ('Port: ',port)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 serversocket.bind((host, port))
 
 class client(Thread):
