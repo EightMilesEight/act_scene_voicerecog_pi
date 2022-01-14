@@ -16,10 +16,6 @@ import speech_recognition as sr
 from tkinter import *
 
 version = 'Beta v1.1'
-# Create an instance of tkinter window
-win = Tk()
-win.title('Scene Recognizer ' + version)
-win.geometry("600x325")
 
 def open_lines():
     text_box.delete(0.0, END)
@@ -163,14 +159,21 @@ def ts(str):
     data = s.recv(1024).decode()
     print(data)
 
-
+# Create an instance of tkinter window
+win = Tk()
+win.title('Scene Recognizer ' + version)
+win.geometry("600x325")
+GUI_start()
+win.mainloop()
 while True:
-    GUI_start()
-    win.mainloop()
+    # creates a list called "lines" out of lines.txt
+    with open('lines.txt') as file:
+        lines = file.readlines()
+        lines = [line.rstrip() for line in lines]
     speech = takecommand()  # whatever user says will be stored in this variable
     print("The Test got in program is: " + speech)
-    if check(speech) != None:
+    if check(speech) and find_scene() != None:
         print(check(speech))
         r = find_scene()
-        ts(s)
         print(r)
+        ts(s)
