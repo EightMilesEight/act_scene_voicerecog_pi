@@ -4,6 +4,7 @@
 # pip3 install adafruit-circuitpython-ht16k33
 import socket
 from threading import *
+from tkinter import *
 '''
 import time
 import board
@@ -17,6 +18,8 @@ display = segments.Seg7x4(i2c)
 # Clear the display.
 display.fill(0)
 '''
+
+act_scene = ''
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = "localhost"
@@ -34,9 +37,15 @@ class client(Thread):
         self.start()
 
     def run(self):
+        act_scene = 'No scene recognized'
+        win = Tk()
+        scene_lbl = Label(win, text='Current scene: ' + act_scene)
+        scene_lbl.pack()
         while True:
             act_scene = self.sock.recv(1024).decode()
-            print('Client sent:',act_scene)
+            print('Client sent:', act_scene)
+            scene_lbl.configure(text='Current scene: ' + act_scene)
+            win.update()
             '''
             display.print(':')
             display.print(act_scene)
