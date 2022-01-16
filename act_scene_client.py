@@ -1,9 +1,5 @@
 import socket
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-host = "localhost"
-port = 1024
-s.connect((host, port))
+import time
 
 # pip install SpeechRecognition
 # in case of error use 'pip install pyaudio' or...
@@ -16,6 +12,9 @@ import speech_recognition as sr
 from tkinter import *
 
 version = 'Beta v1.1'
+speech = ''
+r = ''
+status = ''
 
 def open_lines():
     text_box.delete(0.0, END)
@@ -24,15 +23,33 @@ def open_lines():
     lines.close()
 
 def save_lines():
+    global current_screen
     lines = open("lines.txt", "w")
     lines.write(text_box.get(1.0, END))
     lines.close()
-    win.destroy()
+    text_box.destroy()
+    open_btn.destroy()
+    save.destroy()
+    current_screen = 1
+
 
 def GUI_start():
+    global win
     global text_box
     global open_btn
     global save
+    global speech_lbl
+    global scene_lbl
+    global status_lbl
+    global current_screen
+
+    current_screen = 0
+
+    # Create an instance of tkinter window
+    win = Tk()
+    win.title('Scene Recognizer ' + version)
+    win.geometry("600x325")
+
     # Creating a text box widget
     text_box = Text(win)
     text_box.pack()
@@ -45,6 +62,22 @@ def GUI_start():
     save.pack()
 
     open_lines()
+
+    while True:
+        if current_screen == 0:
+            win.update()
+        elif current_screen == 1:
+            speech_lbl = Label(win, text='Speech recognized: ' + speech)
+            speech_lbl.pack()
+            scene_lbl = Label(win, text='Current scene: ' + r)
+            scene_lbl.pack()
+            status_lbl = Label(win, text='Current status: ' + status)
+            status_lbl.pack()
+            win.update()
+            break
+
+
+
 
 # creates a list called "lines" out of lines.txt
 with open('lines.txt') as file:
@@ -139,16 +172,21 @@ def takecommand():
     # it takes microphone input and returns string output
     r = sr.Recognizer()
     with sr.Microphone(device_index=1) as source:
-        print('Listening.....')
+        status = 'Listening...'
+        win.update()
+        print(status)
         r.pause_threshold = 1
         r.energy_threshold = 4000
         audio = r.listen(source)
     try:
-        print('Recognising...')
+        status = 'Recognizing...'
+        win.update()
+        print(status)
         speech = r.recognize_google(audio, language='en-in')
-        print('User Said : ', speech)
+        win.update()
+        print('Speech recognized: ', speech)
     except Exception as e:
-        print('exception : ', e)
+        print('exception: ', e)
         return "None"
     return speech
 
@@ -159,21 +197,36 @@ def ts(str):
     data = s.recv(1024).decode()
     print(data)
 
-# Create an instance of tkinter window
-win = Tk()
-win.title('Scene Recognizer ' + version)
-win.geometry("600x325")
 GUI_start()
-win.mainloop()
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+host = "localhost"
+port = 1024
+while True:
+    status = 'Connecting to server...'
+    win.update()
+    try:
+        s.connect((host, port))
+    except:
+        status = 'Error: server offline. Retrying in 5 seconds...'
+        win.update()
+        print(status)
+        time.sleep(5)
 while True:
     # creates a list called "lines" out of lines.txt
     with open('lines.txt') as file:
         lines = file.readlines()
         lines = [line.rstrip() for line in lines]
     speech = takecommand()  # whatever user says will be stored in this variable
-    print("The Test got in program is: " + speech)
     if check(speech) and find_scene() != None:
         print(check(speech))
         r = find_scene()
+        win.update()
         print(r)
-        ts(s)
+        try:
+            ts(s)
+        except:
+            status = 'Error: server offline'
+            print(status)
+            win.update()
+            s.close()
+            break
