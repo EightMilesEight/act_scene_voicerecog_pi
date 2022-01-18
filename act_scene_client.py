@@ -173,6 +173,7 @@ def takecommand():
     r = sr.Recognizer()
     with sr.Microphone(device_index=1) as source:
         status = 'Listening...'
+        status_lbl.configure(text='Current status: ' + status)
         win.update()
         print(status)
         r.pause_threshold = 1
@@ -180,16 +181,17 @@ def takecommand():
         audio = r.listen(source)
     try:
         status = 'Recognizing...'
+        status_lbl.configure(text='Current status: ' + status)
         win.update()
         print(status)
         speech = r.recognize_google(audio, language='en-in')
+        speech_lbl.configure(text='Speech recognized: : ' + speech)
         win.update()
         print('Speech recognized: ', speech)
     except Exception as e:
         print('exception: ', e)
         return "None"
     return speech
-
 
 def ts(str):
     s.sendall(r.encode('utf-8'))
@@ -201,16 +203,7 @@ GUI_start()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = "localhost"
 port = 1024
-while True:
-    status = 'Connecting to server...'
-    win.update()
-    try:
-        s.connect((host, port))
-    except:
-        status = 'Error: server offline. Retrying in 5 seconds...'
-        win.update()
-        print(status)
-        time.sleep(5)
+s.connect((host, port))
 while True:
     # creates a list called "lines" out of lines.txt
     with open('lines.txt') as file:
@@ -220,13 +213,15 @@ while True:
     if check(speech) and find_scene() != None:
         print(check(speech))
         r = find_scene()
+        scene_lbl.configure(text='Current scene: ' + r)
         win.update()
         print(r)
         try:
             ts(s)
         except:
             status = 'Error: server offline'
-            print(status)
+            status_lbl.configure(text='Current status: ' + status)
             win.update()
+            print(status)
             s.close()
             break
