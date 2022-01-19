@@ -55,7 +55,9 @@ This project was created by 8Miles8 because I do a lot of theater work, and most
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Coming soon...
+* Start up the server
+* Start up the client
+* Enter lines, with "act x scene x" (referred to as "scene markers") before the start of each scene (these markers should appear automatically. It is very important not to delete any. If your production does not use every scene marker, just leave the spaces empty. The program will error out if it cannot find every scene marker.)
 
 ### Dependencies & Prerequisites
 
@@ -81,14 +83,7 @@ Client:
   pip install tk
   ```
 
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Coming soon...
-
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- ROADMAP -->
@@ -96,10 +91,15 @@ Coming soon...
 
 - [x] Add GUI
 - [x] Improve README
+- [ ] Improve error handling & reporting
+- [ ] Optimize & reorganize client script
+- [ ] Improve server connection process
+    - [ ] Allow server IP to be saved across sessions
+    - [ ] Add auto-reconnect
 - [ ] Add song recognition for musicals
 - [ ] Add Python 3.7+ support
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/EightMilesEight/act_scene_voicerecog_pi/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
