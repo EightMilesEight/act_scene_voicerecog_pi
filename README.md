@@ -4,8 +4,6 @@
 
   <p align="center">
     <br />
-    <a href="https://https://github.com/EightMilesEight/act_scene_voicerecog_pi"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://https://github.com/EightMilesEight/act_scene_voicerecog_pi/issues">Report Bug</a>
     ·
