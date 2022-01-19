@@ -64,13 +64,13 @@ This project was created by 8Miles8 because I do a lot of theater work, and most
 
 Coming soon...
 
-### Prerequisites
+### Dependencies & Prerequisites
 
 Client: 
 
-* Python 3 (Windows systems)
+* Any version of Python 3 (Windows systems)
 
-* Python 3.6 or lower for non-widows systems (updated compatibility coming, until then use a virtual environment or outdated version)
+* Python 3.6 or lower for non-widows systems (updated compatibility coming, until then use a virtual environment or older Python version. PyAudio doesn't have non-Windows wheels for newer vesions.)
 
 * speechrecognition
   ```sh
@@ -84,6 +84,9 @@ Client:
   ```
   
 * tkinter
+  ```sh
+  pip install tk
+  ```
 
 
 <!-- USAGE EXAMPLES -->
