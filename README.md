@@ -39,7 +39,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project was created by 8Miles8 because I do a lot of theater work, and most of the time in rehearsals half the cast and most of the crew has no idea where in the show we are, so I created this project that uses speech recognition to match what's being said onstage to the scene, and broadcasts it to a satelite device (the server). The server also has support for displaying the act & scene number on Adafruit's 12C 7-Segment display. See "#getting-started">Getting Started for setup & usage.
+This project was created by 8Miles8 because I do a lot of theater work, and most of the time in rehearsals half the cast and most of the crew has no idea where in the show we are, so I created this project that uses speech recognition to match what's being said onstage to the scene, and broadcasts it to a satelite device (the server). 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
