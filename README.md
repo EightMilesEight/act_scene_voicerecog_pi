@@ -39,7 +39,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-This project was created by 8Miles8 because I do a lot of theater work, and most of the time in rehearsals half the cast and most of the crew has no idea where in the show we are, so I created this project that uses speech recognition to match what's being said onstage to the scene, and broadcasts it to a satelite device (the server). 
+This project was created by 8Miles8 because I do a lot of theater work, and most of the time in rehearsals half the cast and most of the crew has no idea where in the show we are, so I created this project that uses speech recognition to match what's being said onstage to the scene, and broadcasts it to a satelite device (the server).
+
+* Note- I'm completely self-taught and made this project learning how to do each thing as I went, so the code is a mess, but I did my best to comment it in a way that makes it understandable
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -55,9 +58,16 @@ This project was created by 8Miles8 because I do a lot of theater work, and most
 <!-- GETTING STARTED -->
 ## Getting Started
 
-* Start up the server
-* Start up the client
+* Place the client device in front of the stage or in another place where it will be able to hear the actors (the closer the better- you might want to hook up an external mic for better audio quality)
+* Place the satellite device (server) whereever you need it (this project was originally created because the hair & makeup team was far away from the stage and kept needing to send someone to run over and see where we were during rehearsals, so my satellite device is there)
+    * Note- the server also has support for displaying the act & scene number on Adafruit's 12C 7-Segment display when being run on a Raspberry Pi, to remove the need for a full computer & screen. It's commented out, but you can just remove the quotation marks and it should work.
+* Start up the server script
+* Start up the client script
 * Enter lines, with "act x scene x" (referred to as "scene markers") before the start of each scene (these markers should appear automatically. It is very important not to delete any. If your production does not use every scene marker, just leave the spaces empty. The program will error out if it cannot find every scene marker.)
+* Press "save lines" and the script will start recognizing lines
+* When a scene is recognized, the server script will open a window and update it every time a new scene is recognized
+* Your server script will need to be restarted anytime your client disconnects, and vice versa
+
 
 ### Dependencies & Prerequisites
 
@@ -104,7 +114,6 @@ See the [open issues](https://github.com/EightMilesEight/act_scene_voicerecog_pi
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-
 <!-- CONTRIBUTING -->
 ## Contributing
 
@@ -125,6 +134,11 @@ Don't forget to give the project a star! Thanks again!
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Coming soon...
+* Some people who made this project possible (only giving initials for sake of privacy)
+    * LS
+    * TJ
+    * JG
+* RealPython's socket API & threading guides
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
