@@ -1,11 +1,8 @@
-This project was created by 8Miles8
-It uses speech recognition to recognize what scene is being performed/rehearsed on a stage through reccognizing lines and matching them to the scene.
 <div id="top"></div>
 
   <h3 align="center">Scene Recognizer</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
     <br />
     <a href="https://https://github.com/EightMilesEight/act_scene_voicerecog_pi"><strong>Explore the docs »</strong></a>
     <br />
