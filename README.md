@@ -3,8 +3,6 @@
   <h3 align="center">Scene Recognizer</h3>
 
   <p align="center">
-    <br />
-    <br />
     <a href="https://https://github.com/EightMilesEight/act_scene_voicerecog_pi/issues">Report Bug</a>
     ·
     <a href="https://github.com/EightMilesEight/act_scene_voicerecog_pi/issues">Request Feature</a>
