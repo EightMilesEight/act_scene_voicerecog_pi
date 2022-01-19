@@ -88,11 +88,24 @@ Client:
   pipwin install pyaudio
   ```
   
+* socket API (pre-installed)
+  
 * tkinter
   ```sh
   pip install tk
   ```
+  
+Server:
 
+* Python 3
+
+* Socket API (pre-installed)
+
+* tkinter
+  ```sh
+  pip install tk
+  ```
+  
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
