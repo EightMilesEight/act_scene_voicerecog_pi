@@ -11,16 +11,23 @@ import speech_recognition as sr
 # Import tkinter library
 from tkinter import *
 
-version = 'Beta v1.1'
+import sys
+
+sys.stdout = open('log.txt', 'w+')
+
+version = 'Beta v1.3'
 speech = ''
 r = ''
 status = ''
+markers = {}
+
 
 def open_lines():
     text_box.delete(0.0, END)
     lines = open("lines.txt", "r")
     text_box.insert(END, lines.read())
     lines.close()
+
 
 def save_lines():
     global current_screen
@@ -77,11 +84,8 @@ def GUI_start():
             break
 
 
-
-
 # creates a list called "lines" out of lines.txt
 with open('lines.txt') as file:
-    global lines
     lines = file.readlines()
     lines = [line.rstrip() for line in lines]
 
@@ -95,77 +99,28 @@ def check(phrase):
             return line
 
 
-A1S1 = lines.index(check('act 1 scene 1'))
-A1S2 = lines.index(check('act 1 scene 2'))
-A1S3 = lines.index(check('act 1 scene 3'))
-A1S4 = lines.index(check('act 1 scene 4'))
-A1S5 = lines.index(check('act 1 scene 5'))
-A1S6 = lines.index(check('act 1 scene 6'))
-A1S7 = lines.index(check('act 1 scene 7'))
-A1S8 = lines.index(check('act 1 scene 8'))
-A1S9 = lines.index(check('act 1 scene 9'))
-A1S10 = lines.index(check('act 1 scene 10'))
-A1S11 = lines.index(check('act 1 scene 11'))
-A1S12 = lines.index(check('act 1 scene 12'))
-A1S13 = lines.index(check('act 1 scene 13'))
-A1S14 = lines.index(check('act 1 scene 14'))
-A1S15 = lines.index(check('act 1 scene 15'))
-A2S1 = lines.index(check('act 2 scene 1'))
-A2S2 = lines.index(check('act 2 scene 2'))
-A2S3 = lines.index(check('act 2 scene 3'))
-A2S4 = lines.index(check('act 2 scene 4'))
-A2S5 = lines.index(check('act 2 scene 5'))
-A2S6 = lines.index(check('act 2 scene 6'))
-A2S7 = lines.index(check('act 2 scene 7'))
-A2S8 = lines.index(check('act 2 scene 8'))
-A2S9 = lines.index(check('act 2 scene 9'))
-A2S10 = lines.index(check('act 2 scene 10'))
-A2S11 = lines.index(check('act 2 scene 11'))
-A2S12 = lines.index(check('act 2 scene 12'))
-A2S13 = lines.index(check('act 2 scene 13'))
-A2S14 = lines.index(check('act 2 scene 14'))
-A2S15 = lines.index(check('act 2 scene 15'))
-A3S1 = lines.index(check('act 3 scene 1'))
-A3S2 = lines.index(check('act 3 scene 2'))
-A3S3 = lines.index(check('act 3 scene 3'))
-A3S4 = lines.index(check('act 3 scene 4'))
-A3S5 = lines.index(check('act 3 scene 5'))
-A3S6 = lines.index(check('act 3 scene 6'))
-A3S7 = lines.index(check('act 3 scene 7'))
-A3S8 = lines.index(check('act 3 scene 8'))
-A3S9 = lines.index(check('act 3 scene 9'))
-A3S10 = lines.index(check('act 3 scene 10'))
-A3S11 = lines.index(check('act 3 scene 11'))
-A3S12 = lines.index(check('act 3 scene 12'))
-A3S13 = lines.index(check('act 3 scene 13'))
-A3S14 = lines.index(check('act 3 scene 14'))
-A3S15 = lines.index(check('act 3 scene 15'))
-end = lines.index(check('end'))
+def create_markers():
+    y = 0
+    x = 0
+    while True:
+        try:
+            x += 1
+            marker = 'act %d scene %d' % (y, x)
+            markers[marker] = lines.index(marker)
+        except ValueError:
+            if y <= 10:
+                y += 1
+                x = 0
+            else:
+                lines.index(check('end'))
+                break
 
 
 def find_scene():
-    if (lines.index(check(speech))) in range(A1S1, A1S2):
-        return '0101'
-    elif (lines.index(check(speech))) in range(A1S2, A1S3):
-        return '0102'
-    elif (lines.index(check(speech))) in range(A1S3, A1S4):
-        return '0103'
-    elif (lines.index(check(speech))) in range(A1S4, A1S5):
-        return '0104'
-    elif (lines.index(check(speech))) in range(A1S5, A1S6):
-        return '0105'
-    elif (lines.index(check(speech))) in range(A1S6, A1S7):
-        return '0106'
-    elif (lines.index(check(speech))) in range(A1S7, A1S8):
-        return '0107'
-    elif (lines.index(check(speech))) in range(A1S8, A1S9):
-        return '0108'
-    elif (lines.index(check(speech))) in range(A1S9, A1S10):
-        return '0109'
-    elif (lines.index(check(speech))) in range(A1S10, A1S11):
-        return '0110'
-    elif (lines.index(check(speech))) in range(A1S11, A1S12):
-        return '0111'
+    for i in list(markers.values()):
+        i = list(markers.values()).index(i)
+        if lines.index(check(speech)) in range(list(markers.values())[i], list(markers.values())[i+1]):
+            return '0'+list(markers)[i][4]+list(markers)[i][-2].replace(' ', '0')+list(markers)[i][-1].replace(' ', '0')
 
 # simple function to recognise speech from user
 def takecommand():
@@ -176,8 +131,9 @@ def takecommand():
         status_lbl.configure(text='Current status: ' + status)
         win.update()
         print(status)
-        r.pause_threshold = 1
-        r.energy_threshold = 4000
+        r.pause_threshold = 0.6
+        r.energy_threshold = 1000
+        r.sample_rate = 6000
         audio = r.listen(source)
     try:
         status = 'Recognizing...'
@@ -194,34 +150,45 @@ def takecommand():
     return speech
 
 def ts(str):
-    s.sendall(r.encode('utf-8'))
-    data = ''
-    data = s.recv(1024).decode()
-    print(data)
+    while True:
+        try:
+            s.sendall(r.encode('utf-8'))
+            data = ''
+            data = s.recv(1024).decode()
+            print(data)
+            break
+        except:
+            status = 'Error: server offline (reconnecting in 10s)'
+            status_lbl.configure(text='Current status: ' + status)
+            win.update()
+            print(status)
+            time.sleep(10)
 
+
+create_markers()
 GUI_start()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = "localhost"
 port = 1024
-s.connect((host, port))
 while True:
-    # creates a list called "lines" out of lines.txt
-    with open('lines.txt') as file:
-        lines = file.readlines()
-        lines = [line.rstrip() for line in lines]
+    try:
+        s.connect((host, port))
+        break
+    except:
+        status = 'Error: server offline (reconnecting in 10s)'
+        status_lbl.configure(text='Current status: ' + status)
+        win.update()
+        print(status)
+        time.sleep(10)
+while True:
     speech = takecommand()  # whatever user says will be stored in this variable
-    if check(speech) and find_scene() != None:
+    if check(speech) != None and find_scene() != None:
         print(check(speech))
         r = find_scene()
         scene_lbl.configure(text='Current scene: ' + r)
         win.update()
         print(r)
-        try:
-            ts(s)
-        except:
-            status = 'Error: server offline'
-            status_lbl.configure(text='Current status: ' + status)
-            win.update()
-            print(status)
-            s.close()
-            break
+        ts(s)
+
+s.close()
+win.mainloop()

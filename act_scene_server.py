@@ -19,13 +19,14 @@ display = segments.Seg7x4(i2c)
 display.fill(0)
 '''
 
+version = 'Beta v1.3'
 act_scene = ''
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = "localhost"
 port = 1024
-print ('Host: ',host)
-print ('Port: ',port)
+print('Host: ',host)
+print('Port: ',port)
 serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 serversocket.bind((host, port))
 
@@ -39,8 +40,10 @@ class client(Thread):
     def run(self):
         act_scene = 'No scene recognized'
         win = Tk()
-        scene_lbl = Label(win, text='Current scene: ' + act_scene)
+        win.title('Scene Recognizer ' + version)
+        scene_lbl = Label(win, text='Current scene: ' + act_scene, font=('Arial',100))
         scene_lbl.pack()
+        win.update()
         while True:
             act_scene = self.sock.recv(1024).decode()
             print('Client sent:', act_scene)
