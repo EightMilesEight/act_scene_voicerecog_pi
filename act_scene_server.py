@@ -20,13 +20,12 @@ display.fill(0)
 '''
 
 version = 'Beta v1.3'
-act_scene = ''
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = "localhost"
 port = 1024
-print('Host: ',host)
-print('Port: ',port)
+print('Host: ', host)
+print('Port: ', port)
 serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 serversocket.bind((host, port))
 
@@ -38,7 +37,7 @@ class client(Thread):
         self.start()
 
     def run(self):
-        act_scene = 'No scene recognized'
+        act_scene = 'Unsure'
         win = Tk()
         win.title('Scene Recognizer ' + version)
         scene_lbl = Label(win, text='Current scene: ' + act_scene, font=('Arial',100))

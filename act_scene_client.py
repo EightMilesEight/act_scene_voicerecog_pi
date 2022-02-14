@@ -17,7 +17,7 @@ sys.stdout = open('log.txt', 'w+')
 
 version = 'Beta v1.3'
 speech = ''
-r = ''
+r = 'Unsure'
 status = ''
 markers = {}
 
@@ -84,7 +84,7 @@ def GUI_start():
             break
 
 
-# creates a list called "lines" out of lines.txt
+# creates a list called "lines" out of lines.txt and strips special characters
 with open('lines.txt') as file:
     lines = file.readlines()
     lines = [line.rstrip() for line in lines]
@@ -112,15 +112,15 @@ def create_markers():
                 y += 1
                 x = 0
             else:
-                lines.index(check('end'))
+                marker = '>end<'
+                markers[marker] = lines.index(marker)
                 break
 
 
 def find_scene():
     for i in list(markers.values()):
-        i = list(markers.values()).index(i)
-        if lines.index(check(speech)) in range(list(markers.values())[i], list(markers.values())[i+1]):
-            return '0'+list(markers)[i][4]+list(markers)[i][-2].replace(' ', '0')+list(markers)[i][-1].replace(' ', '0')
+        if lines.index(check(speech)) in range(i, list(markers.values())[list(markers.values()).index(i) + 1]):
+            return '0'+list(markers)[list(markers.values()).index(i)][4]+list(markers)[list(markers.values()).index(i)][-2].replace(' ', '0')+list(markers)[list(markers.values()).index(i)][-1].replace(' ', '0')
 
 # simple function to recognise speech from user
 def takecommand():
@@ -131,9 +131,8 @@ def takecommand():
         status_lbl.configure(text='Current status: ' + status)
         win.update()
         print(status)
-        r.pause_threshold = 0.6
-        r.energy_threshold = 1000
-        r.sample_rate = 6000
+        r.pause_threshold = 0.5
+        r.energy_threshold = 2000
         audio = r.listen(source)
     try:
         status = 'Recognizing...'
@@ -144,8 +143,8 @@ def takecommand():
         speech_lbl.configure(text='Speech recognized: : ' + speech)
         win.update()
         print('Speech recognized: ', speech)
-    except Exception as e:
-        print('exception: ', e)
+    except:
+        print('Error: No recognizable speech detected')
         return "None"
     return speech
 
@@ -180,15 +179,17 @@ while True:
         win.update()
         print(status)
         time.sleep(10)
+# creates a list called "lines" out of lines.txt and strips special characters
+with open('lines.txt') as file:
+    lines = file.readlines()
+    lines = [line.rstrip() for line in lines]
+    lines = list(filter(None, lines))
 while True:
     speech = takecommand()  # whatever user says will be stored in this variable
-    if check(speech) != None and find_scene() != None:
+    if check(speech) != None:
         print(check(speech))
         r = find_scene()
         scene_lbl.configure(text='Current scene: ' + r)
         win.update()
         print(r)
         ts(s)
-
-s.close()
-win.mainloop()
