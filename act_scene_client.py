@@ -55,7 +55,6 @@ def GUI_start():
     # Create an instance of tkinter window
     win = Tk()
     win.title('Scene Recognizer ' + version)
-    win.geometry("600x325")
 
     # Creating a text box widget
     text_box = Text(win)
@@ -85,9 +84,10 @@ def GUI_start():
 
 
 # creates a list called "lines" out of lines.txt and strips special characters
-with open('lines.txt') as file:
+with open('lines.txt', 'r') as file:
     lines = file.readlines()
     lines = [line.rstrip() for line in lines]
+    lines = list(filter(None, lines))
 
 
 # check if the speech includes a phrase, and return which phrase is included
@@ -112,7 +112,7 @@ def create_markers():
                 y += 1
                 x = 0
             else:
-                marker = '>end<'
+                marker = '<end>'
                 markers[marker] = lines.index(marker)
                 break
 
@@ -132,7 +132,6 @@ def takecommand():
         win.update()
         print(status)
         r.pause_threshold = 0.5
-        r.energy_threshold = 2000
         audio = r.listen(source)
     try:
         status = 'Recognizing...'

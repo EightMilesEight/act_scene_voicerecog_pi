@@ -21,6 +21,7 @@ display.fill(0)
 
 version = 'Beta v1.3'
 
+
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = "localhost"
 port = 1024
@@ -40,7 +41,7 @@ class client(Thread):
         act_scene = 'Unsure'
         win = Tk()
         win.title('Scene Recognizer ' + version)
-        scene_lbl = Label(win, text='Current scene: ' + act_scene, font=('Arial',100))
+        scene_lbl = Label(win, text='Current scene: ' + act_scene, font=('Arial'))
         scene_lbl.pack()
         win.update()
         while True:
@@ -56,6 +57,12 @@ class client(Thread):
 
 serversocket.listen(5)
 print ('server started and listening')
+startup_win = Tk()
+startup_win.title('Scene Recognizer Startup ' + version)
+startup_lbl = Label(startup_win, text='Waiting for a client to connect', font=('Arial'))
+startup_lbl.pack()
+startup_win.update()
 while True:
     clientsocket, address = serversocket.accept()
+    startup_win.destroy()
     client(clientsocket, address)
