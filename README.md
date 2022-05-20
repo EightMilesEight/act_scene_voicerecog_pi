@@ -114,11 +114,11 @@ Server:
 
 - [x] Add GUI
 - [x] Improve README
-- [ ] Improve error handling & reporting
-- [ ] Optimize & reorganize client script
-- [ ] Improve server connection process
+- [x] Improve error handling & reporting
+- [x] Optimize & reorganize client script
+- [x] Improve server connection process
     - [ ] Allow server IP to be saved across sessions
-    - [ ] Add auto-reconnect
+    - [x] Add auto-reconnect
 - [ ] Add song recognition for musicals
 - [ ] Add Python 3.7+ support
 
