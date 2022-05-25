@@ -154,10 +154,10 @@ class client(Thread):
             djv.fingerprint_directory('mp3', ['.mp3'])
 
             #	 Or recognize audio from your microphone for `secs` seconds
-            secs = 10
+            secs = 5
             song = 'No songs recognized'
             song = djv.recognize(MicrophoneRecognizer, seconds=secs)
-            if song is None:
+            if song is None or song == 'No songs recognized':
                 song = 'No songs recognized'
                 song_lbl.configure(text=song)
                 win.update()
