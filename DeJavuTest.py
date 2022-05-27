@@ -45,76 +45,72 @@ serversocket.bind((host, port))
 class client(Thread):
     def __init__(self, socket, address):
         Thread.__init__(self)
+        self.version = version
+        self.speech = speech
+        self.song = song
+        self.scene = scene
+        self.status = status
+        self.markers = markers
         self.sock = socket
         self.addr = address
         self.start()
 
     def open_lines(self):
-        text_box.delete(0.0, END)
-        lines = open('lines.txt', 'r')
-        text_box.insert(END, lines.read())
-        lines.close()
+        self.text_box.delete(0.0, END)
+        self.lines = open('lines.txt', 'r')
+        self.text_box.insert(END, self.lines.read())
+        self.lines.close()
 
     def save_lines(self):
-        global current_screen
-        lines = open('lines.txt', 'w')
-        lines.write(text_box.get(1.0, END))
-        lines.close()
-        text_box.destroy()
-        open_btn.destroy()
-        save.destroy()
-        current_screen = 1
+        self.lines = open('lines.txt', 'w')
+        self.lines.write(self.text_box.get(1.0, END))
+        self.lines.close()
+        self.text_box.destroy()
+        self.open_btn.destroy()
+        self.save.destroy()
+        self.current_screen = 1
 
     def GUI_start(self):
-        global win
-        global text_box
-        global open_btn
-        global save
-        global speech_lbl
-        global song_lbl
-        global scene_lbl
-        global status_lbl
-        global current_screen
 
-        current_screen = 0
+        self.current_screen = 0
 
         # Create an instance of tkinter window
-        win = Tk()
-        win.title('Scene Recognizer ' + version)
+        self.win = Tk()
+        self.win.title('Scene Recognizer ' + version)
 
         # Creating a text box widget
-        text_box = Text(win)
-        text_box.pack()
+        self.text_box = Text(self.win)
+        self.text_box.pack()
 
-        open_btn = Button(win, text='Reset to Previous Lines', command=self.open_lines)
-        open_btn.pack()
+        self.open_btn = Button(self.win, text='Reset to Previous Lines', command=self.open_lines)
+        self.open_btn.pack()
 
         # Create a button to save the text
-        save = Button(win, text='Save Lines', command=self.save_lines)
-        save.pack()
+        self.save = Button(self.win, text='Save Lines', command=self.save_lines)
+        self.save.pack()
 
         self.open_lines()
 
         while True:
-            if current_screen == 0:
-                win.update()
-            elif current_screen == 1:
-                speech_lbl = Label(win, text='Last speech recognized: ' + speech)
-                speech_lbl.pack()
-                song_lbl = Label(win, text='Last song recognized: ' + song)
-                song_lbl.pack()
-                scene_lbl = Label(win, text='Current scene: ' + scene)
-                scene_lbl.pack()
-                status_lbl = Label(win, text='Current status: ' + status)
-                status_lbl.pack()
-                win.update()
+            if self.current_screen == 0:
+                self.win.update()
+            elif self.current_screen == 1:
+                self.speech_lbl = Label(self.win, text='Last speech recognized: ' + self.speech)
+                self.speech_lbl.pack()
+                self.song_lbl = Label(self.win, text='Last song recognized: ' + self.song)
+                self.song_lbl.pack()
+                self.scene_lbl = Label(self.win, text='Current scene: ' + self.scene)
+                self.scene_lbl.pack()
+                self.status_lbl = Label(self.win, text='Current status: ' + self.status)
+                self.status_lbl.pack()
+                self.win.update()
                 break
 
     # check if the speech includes a phrase, and return which phrase is included
     # the first phrase in the list that is recognized will be returned
     # for some reason it has an error with - and ' so until I fix that don't use lines containing them
     def check(self, phrase):
-        for line in lines:
+        for line in self.lines:
             if line in phrase:
                 return line
 
@@ -125,27 +121,45 @@ class client(Thread):
             try:
                 x += 1
                 marker = 'act %d scene %d' % (y, x)
-                markers[marker] = lines.index(marker)
+                markers[marker] = self.lines.index(marker)
             except ValueError:
                 if y <= 10:
                     y += 1
                     x = 0
                 else:
                     marker = '<end>'
-                    markers[marker] = lines.index(marker)
+                    markers[marker] = self.lines.index(marker)
                     break
 
     def find_scene(self, thing_to_check):
         for i in list(markers.values()):
-            if lines.index(self.check(thing_to_check)) in range(i, list(markers.values())[list(markers.values()).index(i) + 1]):
+            if self.lines.index(self.check(thing_to_check)) in range(i, list(markers.values())[list(markers.values()).index(i) + 1]):
                 return '0' + list(markers)[list(markers.values()).index(i)][4] + \
                        list(markers)[list(markers.values()).index(i)][-2].replace(' ', '0') + \
                        list(markers)[list(markers.values()).index(i)][-1].replace(' ', '0')
 
     # simple function to recognise speech from user
-    def takecommand(self):
-        global song
-        if __name__ == '__main__':
+    def recognize_speech(self):
+        while True:
+            # it takes microphone input and returns string output
+            r = sr.Recognizer()
+            with sr.Microphone(device_index=1) as source:
+                self.status = 'Listening...'
+                print(status)
+                r.pause_threshold = 0.5
+                audio = r.listen(source)
+            try:
+                self.status = 'Recognizing...'
+                print(status)
+                self.speech = r.recognize_google(audio, language='en-in')
+                print('Speech recognized: ', self.speech)
+                self.speech_update_flag = True
+            except:
+                print('Error: No recognizable speech detected')
+
+    # simple function to recognise speech from user
+    def recognize_song(self):
+        while True:
 
             # create a Dejavu instance
             djv = Dejavu(config)
@@ -155,48 +169,58 @@ class client(Thread):
 
             #	 Or recognize audio from your microphone for `secs` seconds
             secs = 5
-            song = 'No songs recognized'
-            song = djv.recognize(MicrophoneRecognizer, seconds=secs)
-            if song is None or song == 'No songs recognized':
-                song = 'No songs recognized'
-                song_lbl.configure(text=song)
-                win.update()
-                print(song)
-                return song
-            else:
-                song = song['song_name']
-                song_lbl.configure(text='Last song recognized: ' + song)
-                win.update()
-                print(song)
-                return song
+            self.song = 'No songs recognized'
+            self.song = djv.recognize(MicrophoneRecognizer, seconds=secs)
+            self.song_update_flag = True
 
     def run(self):
-        global lines
-        global scene
-        global status
-        global speech
-        global song
         with open('lines.txt') as file:
-            lines = file.readlines()
-            lines = [line.rstrip() for line in lines]
-            lines = list(filter(None, lines))
+            self.lines = file.readlines()
+            self.lines = [line.rstrip() for line in self.lines]
+            self.lines = list(filter(None, self.lines))
         self.create_markers()
         self.GUI_start()
         # creates a list called 'lines' out of lines.txt and strips special characters
         with open('lines.txt') as file:
-            lines = file.readlines()
-            lines = [line.rstrip() for line in lines]
-            lines = list(filter(None, lines))
+            self.lines = file.readlines()
+            self.lines = [line.rstrip() for line in self.lines]
+            self.lines = list(filter(None, self.lines))
+        self.song_update_flag = False
+        self.speech_update_flag = False
+        Thread(target=self.recognize_song).start()
+        Thread(target=self.recognize_speech).start()
         while True:
-            song = 'No songs recognized'
-            song = self.takecommand()  # whatever user says will be stored in this variable
-            if self.check(song) != None:
-                print(self.check(song))
-                scene = self.find_scene(song)
-                scene_lbl.configure(text='Current scene: ' + scene)
-                win.update()
-                print(scene)
-                self.sock.send(scene.encode('UTF-8'))
+            if self.song_update_flag is True:
+                if self.song is None or self.song == 'No songs recognized' or self.song['confidence'] < 5:
+                    self.song = 'No songs recognized'
+                    self.song_lbl.configure(text=self.song)
+                    self.win.update()
+                    print(self.song)
+                    self.song_update_flag = False
+                else:
+                    self.song = self.song['song_name']
+                    self.song_lbl.configure(text='Last song recognized: ' + self.song)
+                    self.win.update()
+                    print(self.song)
+                    self.song_update_flag = False
+                if self.check(self.song) != None:
+                    print(self.check(self.song))
+                    self.scene = self.find_scene(self.song)
+                    self.scene_lbl.configure(text='Current scene: ' + self.scene)
+                    self.win.update()
+                    print(self.scene)
+                    self.sock.send(self.scene.encode('UTF-8'))
+            if self.speech_update_flag is True:
+                self.speech_lbl.configure(text='Speech recognized: : ' + self.speech)
+                if self.check(self.speech) != None:
+                    print(self.check(self.speech))
+                    self.scene = self.find_scene(self.speech)
+                    self.scene_lbl.configure(text='Current scene: ' + self.scene)
+                    self.win.update()
+                    print(self.scene)
+                    self.sock.send(self.scene.encode('UTF-8'))
+                self.speech_update_flag = False
+            self.win.update()
 
 
 serversocket.listen(5)
