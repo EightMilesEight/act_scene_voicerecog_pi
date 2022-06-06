@@ -20,10 +20,10 @@ display.fill(0)
 version = 'Beta v1.3'
 status = ''
 
-act_scene = 'Unsure'
+scene = 'Unsure'
 win = Tk()
 win.title('Scene Recognizer ' + version)
-scene_lbl = Label(win, text='Current scene: ' + act_scene, font=('Arial'))
+scene_lbl = Label(win, text='Current scene: ' + scene, font=('Arial'))
 scene_lbl.pack()
 win.update()
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -36,9 +36,9 @@ while True:
     except:
         time.sleep(3)
 while True:
-    act_scene = s.recv(1024).decode()
-    print('Client sent:', act_scene)
-    scene_lbl.configure(text='Current scene: ' + act_scene)
+    scene = s.recv(1024).decode()
+    print('Client sent:', scene)
+    scene_lbl.configure(text='Current scene: ' + scene)
     win.update()
     '''
     display.print(':')
